@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Symptom Checker</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #f0f4f8, #e0e8f0);
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background: linear-gradient(to bottom, #ffffffcc, #ffffff);
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
+
+  h1 {
+    text-align: center;
+    color: #1E3A8A;
+    margin-bottom: 30px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+
+  .form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .form-section label {
+    font-weight: bold;
+    color: #333;
+  }
+
+  .checkbox-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .checkbox-grid label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background-color: #f5f5f5;
+    padding: 8px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .checkbox-grid input[type="checkbox"] {
+    transform: scale(1.2);
+    cursor: pointer;
+  }
+
+  .checkbox-grid label:hover {
+    background-color: #e0e8ff;
+  }
+
+  .form-section input[type="text"] {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #aaa;
+    font-size: 16px;
+  }
+
+  .btn {
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background-color: #1E3A8A;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .btn:hover {
+    background-color: #155a8a;
+  }
+
+  .btn-return {
+    background-color: #555;
+    margin-top: 10px;
+  }
+
+  .results {
+    background-color: #f9f9f9cc;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+  }
+
+  @media (max-width: 600px) {
+    .container {
+      margin: 20px;
+      padding: 20px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Symptom Checker</h1>
+  <form id="symptomForm">
+    <!-- Symptoms Checkboxes -->
+    <div class="form-section">
+      <label>Select your symptoms:</label>
+      <div class="checkbox-grid">
+        <label><input type="checkbox" value="Fever"> Fever</label>
+        <label><input type="checkbox" value="Cough"> Cough</label>
+        <label><input type="checkbox" value="Headache"> Headache</label>
+        <label><input type="checkbox" value="Fatigue"> Fatigue</label>
+        <label><input type="checkbox" value="Sore Throat"> Sore Throat</label>
+        <label><input type="checkbox" value="Runny Nose"> Runny Nose</label>
+        <label><input type="checkbox" value="Nausea"> Nausea</label>
+        <label><input type="checkbox" value="Muscle Pain"> Muscle Pain</label>
+      </div>
+    </div>
+
+    <!-- Additional Symptoms -->
+    <div class="form-section">
+      <label>Type other symptoms (optional):</label>
+      <input type="text" id="otherSymptoms" placeholder="e.g., dizziness, shortness of breath">
+    </div>
+
+    <button type="submit" class="btn">Check Symptoms</button>
+    <button type="button" class="btn btn-return" id="returnHomeBtn">Return to Home</button>
+  </form>
+
+  <!-- Results -->
+  <div class="results" id="results" style="display:none; margin-top:20px;">
+    <h3>Possible Diseases & Precautions:</h3>
+    <ul id="resultsList"></ul>
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById('symptomForm');
+  const resultsDiv = document.getElementById('results');
+  const resultsList = document.getElementById('resultsList');
+  const returnHomeBtn = document.getElementById('returnHomeBtn');
+
+  // Example symptom-disease mapping
+  const symptomMap = {
+    "Fever": { disease: "Flu / Infection", precautions: "Rest, hydrate, see doctor if persistent" },
+    "Cough": { disease: "Cold / Bronchitis", precautions: "Stay warm, cough syrup, avoid irritants" },
+    "Headache": { disease: "Migraine / Tension", precautions: "Rest, pain relievers, reduce screen time" },
+    "Fatigue": { disease: "Vitamin Deficiency / Flu", precautions: "Rest, balanced diet, check iron levels" },
+    "Sore Throat": { disease: "Strep Throat / Cold", precautions: "Warm drinks, salt water gargle, see doctor if severe" },
+    "Runny Nose": { disease: "Cold / Allergies", precautions: "Antihistamines, tissue, hydration" },
+    "Nausea": { disease: "Food Poisoning / Viral Infection", precautions: "Hydrate, rest, light meals" },
+    "Muscle Pain": { disease: "Flu / Overexertion", precautions: "Rest, mild stretching, hydration" }
+  };
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    resultsList.innerHTML = "";
+
+    // Get checked symptoms
+    const checkedSymptoms = Array.from(form.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
+
+    // Get typed symptoms
+    const typedSymptoms = document.getElementById('otherSymptoms').value.trim();
+    if(typedSymptoms) {
+      checkedSymptoms.push(...typedSymptoms.split(',').map(s => s.trim()));
+    }
+
+    if(checkedSymptoms.length === 0){
+      alert("Please select or type at least one symptom.");
+      return;
+    }
+
+    checkedSymptoms.forEach(symptom => {
+      if(symptomMap[symptom]){
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${symptomMap[symptom].disease}</strong> - Precautions: ${symptomMap[symptom].precautions}`;
+        resultsList.appendChild(li);
+      } else {
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${symptom}</strong> - Disease information not available.`;
+        resultsList.appendChild(li);
+      }
+    });
+
+    resultsDiv.style.display = 'block';
+    resultsDiv.scrollIntoView({behavior: 'smooth'});
+  });
+
+  // Return to home
+  returnHomeBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+
+</body>
+</html>

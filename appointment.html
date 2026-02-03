@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Request Appointment</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #f0f4f8, #e0e8f0);
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background: linear-gradient(to bottom, #ffffffcc, #ffffff);
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
+
+  h1 {
+    text-align: center;
+    color: #1E3A8A;
+    margin-bottom: 30px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+
+  .form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .form-section label {
+    font-weight: bold;
+    color: #333;
+  }
+
+  select, input[type="text"], input[type="date"], input[type="time"] {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #aaa;
+    font-size: 16px;
+  }
+
+  select:hover, input[type="text"]:hover, input[type="date"]:hover, input[type="time"]:hover {
+    border-color: #1E3A8A;
+  }
+
+  .btn {
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background-color: #1E3A8A;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .btn:hover {
+    background-color: #155a8a;
+  }
+
+  .btn-return {
+    background-color: #555;
+    margin-top: 10px;
+  }
+
+  .results {
+    background-color: #f9f9f9cc;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+  }
+
+  @media (max-width: 600px) {
+    .container {
+      margin: 20px;
+      padding: 20px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Request Appointment</h1>
+  <form id="appointmentForm">
+
+    <!-- Hospital Branch -->
+    <div class="form-section">
+      <label for="hospitalBranch">Select Hospital Branch:</label>
+      <select id="hospitalBranch">
+        <option value="" selected disabled>Select branch</option>
+        <option value="Downtown">Downtown</option>
+        <option value="Uptown">Uptown</option>
+        <option value="Suburban">Suburban</option>
+        <option value="City Center">City Center</option>
+      </select>
+    </div>
+
+    <!-- Doctor Selection -->
+    <div class="form-section">
+      <label for="doctor">Select Doctor (if known):</label>
+      <select id="doctor">
+        <option value="" selected disabled>Select doctor</option>
+        <option value="Dr. Alice Smith">Dr. Alice Smith</option>
+        <option value="Dr. Bob Jones">Dr. Bob Jones</option>
+        <option value="Dr. Clara White">Dr. Clara White</option>
+        <option value="Dr. David Brown">Dr. David Brown</option>
+      </select>
+    </div>
+
+    <!-- Type of Disease / Checkup -->
+    <div class="form-section">
+      <label for="diseaseType">Type of Visit / Disease:</label>
+      <select id="diseaseType">
+        <option value="" selected disabled>Select type</option>
+        <option value="General Checkup">General Checkup</option>
+        <option value="Cardiology">Cardiology</option>
+        <option value="Dental">Dental</option>
+        <option value="Neurology">Neurology</option>
+        <option value="Nutrition Consultation">Nutrition Consultation</option>
+      </select>
+    </div>
+
+    <!-- Appointment Date -->
+    <div class="form-section">
+      <label for="appointmentDate">Select Date:</label>
+      <input type="date" id="appointmentDate" required>
+    </div>
+
+    <!-- Appointment Time -->
+    <div class="form-section">
+      <label for="appointmentTime">Select Time:</label>
+      <input type="time" id="appointmentTime" required>
+    </div>
+
+    <!-- Location -->
+    <div class="form-section">
+      <label for="location">Preferred Location / Room:</label>
+      <input type="text" id="location" placeholder="Enter preferred location or room">
+    </div>
+
+    <button type="submit" class="btn">Request Appointment</button>
+    <button type="button" class="btn btn-return" id="returnHomeBtn">Return to Home</button>
+  </form>
+
+  <!-- Results -->
+  <div class="results" id="results" style="display:none; margin-top:20px;">
+    <h3>Appointment Details:</h3>
+    <ul id="resultsList"></ul>
+  </div>
+</div>
+
+<script>
+  const appointmentForm = document.getElementById('appointmentForm');
+  const resultsDiv = document.getElementById('results');
+  const resultsList = document.getElementById('resultsList');
+  const returnHomeBtn = document.getElementById('returnHomeBtn');
+
+  appointmentForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const branch = document.getElementById('hospitalBranch').value;
+    const doctor = document.getElementById('doctor').value || 'Any available doctor';
+    const type = document.getElementById('diseaseType').value;
+    const date = document.getElementById('appointmentDate').value;
+    const time = document.getElementById('appointmentTime').value;
+    const location = document.getElementById('location').value || 'General Area';
+
+    if(!branch || !type || !date || !time){
+      alert("Please fill in all required fields.");
+      return;
+    }
+
+    resultsList.innerHTML = `
+      <li><strong>Hospital Branch:</strong> ${branch}</li>
+      <li><strong>Doctor:</strong> ${doctor}</li>
+      <li><strong>Type of Visit:</strong> ${type}</li>
+      <li><strong>Date:</strong> ${date}</li>
+      <li><strong>Time:</strong> ${time}</li>
+      <li><strong>Location:</strong> ${location}</li>
+    `;
+    resultsDiv.style.display = 'block';
+    resultsDiv.scrollIntoView({behavior: 'smooth'});
+  });
+
+  // Return to Home
+  returnHomeBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+
+</body>
+</html>

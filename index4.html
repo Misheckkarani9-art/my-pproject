@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Misheck's Healthcare Clinic</title>
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f9;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+    background-color: #2c2c2c;
+    color: white;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+/* ===== LOGO ===== */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-circle {
+    border: 3px solid gold;
+    border-radius: 50%;
+    padding: 12px 16px;
+    text-align: center;
+    position: relative;
+}
+
+.logo-circle img {
+    width: 24px;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+}
+
+.logo-circle .clinic-name {
+    font-size: 20px;
+    font-weight: bold;
+    font-style: italic;
+    color: gold;
+}
+
+/* ===== MENU ===== */
+.menu {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    position: relative;
+}
+
+.menu a, .menu button {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.menu a:hover, .menu button:hover {
+    text-decoration: underline;
+}
+
+/* ===== DROPDOWN ===== */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    min-width: 150px;
+    top: 40px;
+    right: 0;
+    border-radius: 6px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    z-index: 100;
+}
+
+.dropdown-content a {
+    color: #333;
+    padding: 10px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+/* ===== SEARCH ===== */
+.search-box {
+    display: flex;
+    gap: 5px;
+}
+.search-box input {
+    padding: 6px;
+    border: none;
+    border-radius: 4px 0 0 4px;
+}
+.search-box button {
+    padding: 6px 10px;
+    border: none;
+    background: gold;
+    cursor: pointer;
+    border-radius: 0 4px 4px 0;
+}
+
+/* ===== LOGIN / PROFILE ===== */
+.auth-btn {
+    cursor: pointer;
+}
+
+/* ===== DROPDOWN LOGIN/PROFILE ===== */
+.dropdown-box {
+    display: none;
+    position: absolute;
+    right: 20px;
+    top: 60px;
+    background: white;
+    color: #333;
+    width: 300px;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    z-index: 999;
+}
+
+.dropdown-box input, .dropdown-box button {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+.dropdown-box button {
+    background: #2c2c2c;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+/* ===== PROFILE ===== */
+.profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: #ddd;
+    margin: 0 auto 10px;
+    background-size: cover;
+    background-position: center;
+}
+
+.profile-info {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #555;
+}
+
+.home-btn, .logout-btn {
+    width: 100%;
+    padding: 8px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.home-btn { background: #6c757d; color: white; }
+.logout-btn { background: #dc3545; color: white; }
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <!-- Logo -->
+    <div class="logo">
+        <div class="logo-circle">
+            <span class="clinic-name">Misheck's Healthcare Clinic</span>
+            <img src="https://cdn-icons-png.flaticon.com/512/2967/2967452.png" alt="hospital sign">
+        </div>
+    </div>
+
+    <!-- Menu -->
+    <div class="menu">
+        <a href="#"><i class="fas fa-pills"></i> Drug & Supplements</a>
+        <a href="#"><i class="fas fa-stethoscope"></i> Symptom Checker</a>
+        <a href="#"><i class="fas fa-user-md"></i> Find Doctor</a>
+        <a href="#"><i class="fas fa-calendar-check"></i> Request Appointment</a>
+
+        <!-- Dropdown for About/Contact/Settings -->
+        <div style="position:relative;">
+            <button onclick="toggleDropdown()">More <i class="fas fa-caret-down"></i></button>
+            <div class="dropdown-content" id="navDropdown">
+                <a href="#">About Us</a>
+                <a href="#">Contact Us</a>
+                <a href="#">Settings</a>
+            </div>
+        </div>
+
+        <!-- Search -->
+        <div class="search-box">
+            <input type="text" placeholder="Search...">
+            <button><i class="fas fa-search"></i></button>
+        </div>
+
+        <!-- Login/Profile -->
+        <a class="auth-btn" id="authBtn" onclick="toggleLogin()">
+            <i class="fas fa-sign-in-alt"></i> Login
+        </a>
+    </div>
+</div>
+
+<!-- BODY CONTENT -->
+<div style="padding:20px;">
+    <h1>Welcome to Misheck's Healthcare Clinic</h1>
+    <p>This is a professional healthcare platform accessible in hospitals.</p>
+</div>
+
+<!-- LOGIN DROPDOWN -->
+<div class="dropdown-box" id="loginBox">
+    <h3>Login</h3>
+    <input type="text" id="name" placeholder="Full Name">
+    <input type="email" id="email" placeholder="Email">
+    <input type="tel" id="phone" placeholder="Phone">
+    <button onclick="login()">Login</button>
+</div>
+
+<!-- PROFILE DROPDOWN -->
+<div class="dropdown-box" id="profileBox">
+    <div class="profile-pic" id="profilePic"></div>
+    <input type="file" onchange="uploadPic(event)">
+    <div class="profile-info">
+        <p><strong>Name:</strong> <span id="pName"></span></p>
+        <p><strong>Email:</strong> <span id="pEmail"></span></p>
+        <p><strong>Phone:</strong> <span id="pPhone"></span></p>
+        <p><strong>Recent Hospital:</strong> —</p>
+        <p><strong>Recent Medicine:</strong> —</p>
+        <p><strong>Recent Doctor:</strong> —</p>
+    </div>
+    <button class="home-btn" onclick="goHome()">Return Home</button>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+</div>
+
+<script>
+let loggedIn = false;
+
+/* Navbar dropdown */
+function toggleDropdown() {
+    const dropdown = document.getElementById("navDropdown");
+    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+}
+
+/* Login/Profile dropdown */
+function toggleLogin() {
+    if(!loggedIn) {
+        document.getElementById("loginBox").style.display = "block";
+    } else {
+        document.getElementById("profileBox").style.display = "block";
+    }
+}
+
+function login() {
+    loggedIn = true;
+    document.getElementById("loginBox").style.display = "none";
+
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const phone = document.getElementById("phone").value;
+
+    document.getElementById("pName").textContent = name;
+    document.getElementById("pEmail").textContent = email;
+    document.getElementById("pPhone").textContent = phone;
+
+    document.getElementById("authBtn").innerHTML = '<i class="fas fa-user-circle"></i> Profile';
+}
+
+function logout() {
+    loggedIn = false;
+    document.getElementById("profileBox").style.display = "none";
+    document.getElementById("authBtn").innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+}
+
+function goHome() {
+    document.getElementById("profileBox").style.display = "none";
+}
+
+function uploadPic(e) {
+    const reader = new FileReader();
+    reader.onload = () => {
+        document.getElementById("profilePic").style.backgroundImage = `url(${reader.result})`;
+    };
+    reader.readAsDataURL(e.target.files[0]);
+}
+
+/* Close dropdowns if clicked outside */
+window.onclick = function(e) {
+    if(!e.target.matches('.menu button')) {
+        document.getElementById("navDropdown").style.display = "none";
+    }
+}
+</script>
+      
+
+
+
+
+</body>
+</html>

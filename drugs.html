@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drug & Supplements Form</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #f0f4f8, #e0e8f0);
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background: linear-gradient(to bottom, #ffffffcc, #ffffff);
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
+
+  h1 {
+    text-align: center;
+    color: #1E3A8A;
+    margin-bottom: 30px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+
+  .form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .form-section label {
+    font-weight: bold;
+    color: #333;
+  }
+
+  .form-section select, 
+  .form-section input[type="text"] {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #aaa;
+    font-size: 16px;
+  }
+
+  .form-section select:hover,
+  .form-section input[type="text"]:hover {
+    border-color: #1E3A8A;
+  }
+
+  .btn {
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background-color: #1E3A8A;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .btn:hover {
+    background-color: #155a8a;
+  }
+
+  .btn-return {
+    background-color: #555;
+    margin-top: 10px;
+  }
+
+  @media (max-width: 600px) {
+    .container {
+      margin: 20px;
+      padding: 20px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Drug & Supplements Form</h1>
+  <form id="supplementsForm">
+    <!-- Painkillers -->
+    <div class="form-section">
+      <label for="painkillers">Painkillers</label>
+      <select id="painkillers" name="painkillers">
+        <option value="" selected disabled>Select a painkiller</option>
+        <option value="Paracetamol">Paracetamol</option>
+        <option value="Ibuprofen">Ibuprofen</option>
+        <option value="Aspirin">Aspirin</option>
+        <option value="Naproxen">Naproxen</option>
+      </select>
+    </div>
+
+    <!-- Vitamins -->
+    <div class="form-section">
+      <label for="vitamins">Vitamins</label>
+      <select id="vitamins" name="vitamins">
+        <option value="" selected disabled>Select a vitamin</option>
+        <option value="Vitamin C">Vitamin C</option>
+        <option value="Vitamin D">Vitamin D</option>
+        <option value="Vitamin B12">Vitamin B12</option>
+        <option value="Vitamin E">Vitamin E</option>
+      </select>
+    </div>
+
+    <!-- Supplements -->
+    <div class="form-section">
+      <label for="supplements">Supplements</label>
+      <select id="supplements" name="supplements">
+        <option value="" selected disabled>Select a supplement</option>
+        <option value="Fish Oil">Fish Oil</option>
+        <option value="Probiotics">Probiotics</option>
+        <option value="Calcium">Calcium</option>
+        <option value="Magnesium">Magnesium</option>
+      </select>
+    </div>
+
+    <!-- Additional Notes -->
+    <div class="form-section">
+      <label for="notes">Additional Notes / Instructions</label>
+      <input type="text" id="notes" name="notes" placeholder="Type any instructions here">
+    </div>
+
+    <button type="submit" class="btn">Submit</button>
+    <button type="button" class="btn btn-return" id="returnHomeBtn">Return to Home</button>
+  </form>
+</div>
+
+<script>
+  const form = document.getElementById('supplementsForm');
+  const returnHomeBtn = document.getElementById('returnHomeBtn');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const painkiller = document.getElementById('painkillers').value;
+    const vitamin = document.getElementById('vitamins').value;
+    const supplement = document.getElementById('supplements').value;
+    const notes = document.getElementById('notes').value;
+
+    alert(`Form Submitted:\nPainkiller: ${painkiller}\nVitamin: ${vitamin}\nSupplement: ${supplement}\nNotes: ${notes}`);
+  });
+
+  returnHomeBtn.addEventListener('click', () => {
+    // Scroll smoothly to the top (homepage)
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+
+</body>
+</html>
